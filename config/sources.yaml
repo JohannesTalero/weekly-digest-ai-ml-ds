@@ -1,0 +1,20 @@
+# Fuentes RSS/Atom (nombre y URL del feed)
+rss:
+  - name: "Towards Data Science"
+    url: "https://towardsdatascience.com/feed"
+  - name: "Distill"
+    url: "https://distill.pub/rss.xml"
+
+# Hacker News (términos de búsqueda y límite de ítems)
+hacker_news:
+  queries:
+    - "machine learning"
+    - "large language models"
+  limit: 15
+
+# Reddit (subreddits y límite por subreddit)
+reddit:
+  subreddits:
+    - "MachineLearning"
+    - "artificial"
+  limit_per_sub: 10
