@@ -28,7 +28,7 @@ Fragmento o descripción:
         resp = client.chat.completions.create(
             model=self._model,
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=200,
+            max_completion_tokens=200,
         )
         return (resp.choices[0].message.content or "").strip()
 
@@ -58,7 +58,7 @@ Artículos:
         resp = client.chat.completions.create(
             model=self._model,
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=100,
+            max_completion_tokens=100,
         )
         raw = (resp.choices[0].message.content or "").strip()
         # Parsear "2, 0, 4, 1, 3" o similar
