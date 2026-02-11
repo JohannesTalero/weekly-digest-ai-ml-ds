@@ -19,6 +19,7 @@ if str(_repo_root) not in sys.path:
 from digest.adapters.email_sendgrid import SendGridEmail, build_and_send_digest  # noqa: E402
 from digest.adapters.llm_anthropic import AnthropicLLM  # noqa: E402
 from digest.adapters.llm_openai import OpenAILLM  # noqa: E402
+from digest.config.digest_history import save_digest_markdown  # noqa: E402
 from digest.config.history import load_sent_urls, save_sent_urls  # noqa: E402
 from digest.config.sources import load_sources  # noqa: E402
 from digest.domain.urls import normalize_url  # noqa: E402
@@ -32,6 +33,7 @@ REPO_ROOT = Path(os.environ.get("REPO_ROOT", _repo_root))
 SOURCES_PATH = REPO_ROOT / "config" / "sources.yaml"
 LINKS_PATH = REPO_ROOT / "config" / "links.md"
 HISTORY_PATH = REPO_ROOT / "data" / "sent-urls.json"
+DIGESTS_DIR = REPO_ROOT / "data" / "digests"
 
 
 def _require_env(name: str) -> str:
@@ -77,6 +79,10 @@ def main() -> None:
 
     build_and_send_digest(email, top_items, to=to_email)
     logger.info("Email enviado a %s con %d ítems.", to_email, len(top_items))
+
+    # Persistir digest como Markdown (historial legible)
+    digest_path = save_digest_markdown(top_items, DIGESTS_DIR)
+    logger.info("Digest guardado en %s", digest_path)
 
     # Persistir URLs enviadas (RF-03b, Flujo paso 10)
     sent_urls = load_sent_urls(HISTORY_PATH)
