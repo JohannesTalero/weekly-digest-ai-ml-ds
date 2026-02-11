@@ -57,6 +57,41 @@ repo_auto_learning/
 - An LLM API key (OpenAI, Anthropic or compatible) for summaries and ranking.
 - (Optional) Reddit app to use the API (client id + secret).
 
+## Local development (virtual environment)
+
+Use a virtual environment so dependencies stay isolated from the system Python.
+
+**Create and activate the venv:**
+
+```bash
+# Create (from repo root)
+python -m venv .venv
+
+# Activate
+# Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+# Windows (CMD):
+.venv\Scripts\activate.bat
+# macOS / Linux:
+source .venv/bin/activate
+```
+
+**Install the project in editable mode (with dev tools):**
+
+```bash
+pip install -e ".[dev]"
+```
+
+Then run scripts from the repo root. The `.venv/` folder is already in [.gitignore](.gitignore), so it is not committed.
+
+**Run tests:**
+
+```bash
+pytest
+```
+
+Use `pytest -v` for verbose output, or `pytest tests/domain/` / `pytest tests/config/` to run only certain test modules.
+
 ## Next steps
 
 1. Configure [GitHub secrets](docs/configuracion.md#secrets) (email, send API, LLM API).
