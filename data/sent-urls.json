@@ -1,10 +1,15 @@
 {
   "urls": [
+    "https://distill.pub/2020/circuits/branch-specialization",
+    "https://distill.pub/2020/circuits/curve-circuits",
+    "https://distill.pub/2020/circuits/visualizing-weights",
     "https://distill.pub/2020/circuits/weight-banding",
     "https://distill.pub/2021/distill-hiatus",
     "https://distill.pub/2021/gnn-intro",
+    "https://distill.pub/2021/multimodal-neurons",
     "https://distill.pub/2021/understanding-gnns",
-    "https://distill.pub/selforg/2021/adversarial"
+    "https://distill.pub/selforg/2021/adversarial",
+    "https://distill.pub/selforg/2021/textures"
   ],
   "updated": "2026-02-11"
 }
