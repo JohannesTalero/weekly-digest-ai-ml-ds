@@ -1,0 +1,49 @@
+# Digest semanal AI/ML/DS (RF-16, RNF-01, RNF-06b, RNF-07)
+# Trigger: schedule (lunes 08:00 UTC) y workflow_dispatch para pruebas.
+name: Weekly Digest
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Run digest script
+        env:
+          DIGEST_EMAIL_TO: ${{ secrets.DIGEST_EMAIL_TO }}
+          DIGEST_EMAIL_FROM: ${{ secrets.DIGEST_EMAIL_FROM }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: python scripts/build_digest.py
+
+      - name: Commit and push sent-urls
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/sent-urls.json
+          if git diff --staged --quiet; then
+            echo "No changes to sent-urls.json"
+          else
+            git commit -m "chore: update sent URLs"
+            git push
+          fi
