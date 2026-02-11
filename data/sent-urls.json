@@ -1,4 +1,10 @@
 {
-  "urls": [],
-  "updated": null
+  "urls": [
+    "https://distill.pub/2020/circuits/weight-banding",
+    "https://distill.pub/2021/distill-hiatus",
+    "https://distill.pub/2021/gnn-intro",
+    "https://distill.pub/2021/understanding-gnns",
+    "https://distill.pub/selforg/2021/adversarial"
+  ],
+  "updated": "2026-02-11"
 }
