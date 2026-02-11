@@ -116,13 +116,9 @@ class TestRunCorePipeline:
         urls = {i.url for i in result}
         assert "https://new.com/1" in urls and "https://old.com/2" in urls
 
-    def test_filters_already_sent(
-        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-    ) -> None:
+    def test_filters_already_sent(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
         history_file = tmp_path / "sent.json"
-        history_file.write_text(
-            '{"urls": ["https://already.com/sent"], "updated": "2025-01-01"}'
-        )
+        history_file.write_text('{"urls": ["https://already.com/sent"], "updated": "2025-01-01"}')
         links_file = tmp_path / "links.md"
         links_file.write_text("")
 

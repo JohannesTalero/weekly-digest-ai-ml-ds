@@ -3,9 +3,7 @@
 import tempfile
 from pathlib import Path
 
-import pytest
 from digest.adapters.input_manual import fetch_manual_items
-from digest.domain.models import Item
 
 
 def test_fetch_manual_items_empty_file():

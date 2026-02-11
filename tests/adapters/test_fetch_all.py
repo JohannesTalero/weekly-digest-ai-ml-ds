@@ -3,7 +3,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
 from digest.adapters.fetch_all import fetch_all_items
 from digest.config.sources import RssSource, SourcesConfig
 

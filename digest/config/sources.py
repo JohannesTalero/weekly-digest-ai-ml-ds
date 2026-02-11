@@ -74,10 +74,16 @@ def load_sources(path: str | Path) -> SourcesConfig:
         hacker_news = None
 
     rd = raw.get("reddit")
-    if rd and isinstance(rd, dict) and (rd.get("subreddits") or rd.get("limit_per_sub") is not None):
+    if (
+        rd
+        and isinstance(rd, dict)
+        and (rd.get("subreddits") or rd.get("limit_per_sub") is not None)
+    ):
         reddit = RedditConfig(
             subreddits=[s for s in (rd.get("subreddits") or []) if isinstance(s, str)],
-            limit_per_sub=rd.get("limit_per_sub") if isinstance(rd.get("limit_per_sub"), int) else 10,
+            limit_per_sub=rd.get("limit_per_sub")
+            if isinstance(rd.get("limit_per_sub"), int)
+            else 10,
         )
     else:
         reddit = None

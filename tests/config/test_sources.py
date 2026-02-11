@@ -2,13 +2,11 @@
 
 from pathlib import Path
 
-import pytest
 
 from digest.config.sources import (
     HackerNewsConfig,
     RedditConfig,
     RssSource,
-    SourcesConfig,
     load_sources,
 )
 
@@ -56,7 +54,9 @@ reddit:
   limit_per_sub: 5
 """)
         cfg = load_sources(tmp_path / "s.yaml")
-        assert cfg.reddit == RedditConfig(subreddits=["MachineLearning", "artificial"], limit_per_sub=5)
+        assert cfg.reddit == RedditConfig(
+            subreddits=["MachineLearning", "artificial"], limit_per_sub=5
+        )
 
     def test_full_yaml(self, tmp_path: Path) -> None:
         (tmp_path / "s.yaml").write_text("""

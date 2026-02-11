@@ -16,12 +16,13 @@ _repo_root = Path(__file__).resolve().parent.parent
 if str(_repo_root) not in sys.path:
     sys.path.insert(0, str(_repo_root))
 
-from digest.adapters.email_sendgrid import SendGridEmail, build_and_send_digest
-from digest.adapters.llm_openai import OpenAILLM
-from digest.config.history import load_sent_urls, save_sent_urls
-from digest.config.sources import load_sources
-from digest.domain.urls import normalize_url
-from digest.use_cases.build_digest import build_digest
+from digest.adapters.email_sendgrid import SendGridEmail, build_and_send_digest  # noqa: E402
+from digest.adapters.llm_anthropic import AnthropicLLM  # noqa: E402
+from digest.adapters.llm_openai import OpenAILLM  # noqa: E402
+from digest.config.history import load_sent_urls, save_sent_urls  # noqa: E402
+from digest.config.sources import load_sources  # noqa: E402
+from digest.domain.urls import normalize_url  # noqa: E402
+from digest.use_cases.build_digest import build_digest  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -41,6 +42,16 @@ def _require_env(name: str) -> str:
     return value.strip()
 
 
+def _make_llm() -> OpenAILLM | AnthropicLLM:
+    """Crea el adaptador LLM según LLM_PROVIDER (openai | anthropic)."""
+    provider = os.environ.get("LLM_PROVIDER", "openai").lower()
+    if provider == "anthropic":
+        logger.info("Usando proveedor LLM: Anthropic")
+        return AnthropicLLM()
+    logger.info("Usando proveedor LLM: OpenAI")
+    return OpenAILLM()
+
+
 def main() -> None:
     to_email = _require_env("DIGEST_EMAIL_TO")
     _require_env("SENDGRID_API_KEY")
@@ -48,7 +59,7 @@ def main() -> None:
     _require_env("LLM_API_KEY")
 
     sources_config = load_sources(SOURCES_PATH)
-    llm = OpenAILLM()
+    llm = _make_llm()
     email = SendGridEmail()
 
     top_items = build_digest(

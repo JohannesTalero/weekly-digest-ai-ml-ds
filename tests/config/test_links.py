@@ -2,10 +2,8 @@
 
 from pathlib import Path
 
-import pytest
 
 from digest.config.links import load_links
-from digest.domain.models import Item
 
 
 class TestLoadLinks:

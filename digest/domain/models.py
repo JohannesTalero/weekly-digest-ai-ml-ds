@@ -21,4 +21,6 @@ class Item:
         if not self.url or not self.url.strip():
             raise ValueError("Item.url no puede estar vacío")
         if self.source not in ("rss", "manual", "hacker_news", "reddit"):
-            raise ValueError(f"Item.source debe ser rss|manual|hacker_news|reddit, recibido: {self.source!r}")
+            raise ValueError(
+                f"Item.source debe ser rss|manual|hacker_news|reddit, recibido: {self.source!r}"
+            )

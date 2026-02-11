@@ -92,9 +92,31 @@ pytest
 
 Use `pytest -v` for verbose output, or `pytest tests/domain/` / `pytest tests/config/` to run only certain test modules.
 
+## Run the digest locally
+
+Set the required environment variables and run the script from the repo root:
+
+```bash
+# Required
+export DIGEST_EMAIL_TO="tu@email.com"
+export DIGEST_EMAIL_FROM="digest@tudominio.com"
+export SENDGRID_API_KEY="SG.xxx..."
+export LLM_API_KEY="sk-..."
+
+# Optional (defaults: LLM_PROVIDER=openai, LLM_MODEL=gpt-4o-mini)
+export LLM_PROVIDER="openai"        # or "anthropic"
+export LLM_MODEL="gpt-4o-mini"      # or "claude-3-haiku-20240307"
+
+python scripts/build_digest.py
+```
+
+On Windows PowerShell, use `$env:VAR = "value"` instead of `export`.
+
+The script reads `config/sources.yaml` and `config/links.md`, fetches articles, generates summaries with the LLM, sends the email via SendGrid, and updates `data/sent-urls.json`.
+
 ## Next steps
 
-1. Configure [GitHub secrets](docs/configuracion.md#secrets) (email, send API, LLM API).
+1. Configure [GitHub secrets](docs/configuracion.md#secrets) (email, SendGrid, LLM).
 2. Edit [config/sources.yaml](docs/configuracion.md#fuentes) and [config/links.md](docs/configuracion.md#enlaces-manuales).
 3. Run the workflow (manually the first time or wait for the weekly schedule).
 

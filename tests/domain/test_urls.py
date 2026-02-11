@@ -1,7 +1,5 @@
 """Tests para normalización de URL y lógica de filtro de ya enviados (T8.1)."""
 
-import pytest
-
 from digest.domain.models import Item
 from digest.domain.urls import normalize_url
 
@@ -10,7 +8,10 @@ class TestNormalizeUrl:
     """Normalización de URL para dedup y comparación con historial."""
 
     def test_removes_fragment_and_query(self) -> None:
-        assert normalize_url("https://example.com/path?q=1&utm=x#section") == "https://example.com/path"
+        assert (
+            normalize_url("https://example.com/path?q=1&utm=x#section")
+            == "https://example.com/path"
+        )
 
     def test_lowercases_scheme_and_host(self) -> None:
         assert normalize_url("HTTPS://Example.COM/Path") == "https://example.com/Path"

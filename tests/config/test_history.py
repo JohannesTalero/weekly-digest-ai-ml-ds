@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import json
-import pytest
 
 from digest.config.history import load_sent_urls, save_sent_urls
 
@@ -17,7 +16,9 @@ class TestLoadSentUrls:
         assert load_sent_urls(tmp_path / "s.json") == set()
 
     def test_parses_json_urls(self, tmp_path: Path) -> None:
-        (tmp_path / "s.json").write_text('{"urls": ["https://a.com", "https://b.com"], "updated": "2025-01-01"}')
+        (tmp_path / "s.json").write_text(
+            '{"urls": ["https://a.com", "https://b.com"], "updated": "2025-01-01"}'
+        )
         got = load_sent_urls(tmp_path / "s.json")
         assert got == {"https://a.com", "https://b.com"}
 

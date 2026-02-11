@@ -31,7 +31,11 @@ def load_sent_urls(path: str | Path) -> set[str]:
         except (json.JSONDecodeError, TypeError):
             return set()
     if suffix == ".txt":
-        return {line.strip() for line in text.splitlines() if line.strip() and _looks_like_url(line.strip())}
+        return {
+            line.strip()
+            for line in text.splitlines()
+            if line.strip() and _looks_like_url(line.strip())
+        }
     return set()
 
 

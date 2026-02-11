@@ -4,7 +4,6 @@ from pathlib import Path
 
 from digest.config.sources import SourcesConfig
 from digest.domain.llm_port import ItemWithSummary, LLMPort
-from digest.domain.models import Item
 
 from digest.use_cases.pipeline_core import run_core_pipeline
 

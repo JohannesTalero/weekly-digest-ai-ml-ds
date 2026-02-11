@@ -1,9 +1,7 @@
 """Tests del adaptador RSS (T3.1) con mocks."""
 
-import pytest
 from digest.adapters.input_rss import _fetch_one_feed, fetch_rss_items
 from digest.config.sources import RssSource
-from digest.domain.models import Item
 
 
 def test_fetch_rss_items_empty_sources():
@@ -41,7 +39,10 @@ def test_fetch_one_feed_parses_entries(httpx_mock):
 
 
 def test_fetch_rss_items_continues_after_one_feed_fails(httpx_mock):
-    httpx_mock.add_response(url="https://good.com/feed.xml", text="<rss><channel><item><title>A</title><link>https://a.com/1</link></item></channel></rss>")
+    httpx_mock.add_response(
+        url="https://good.com/feed.xml",
+        text="<rss><channel><item><title>A</title><link>https://a.com/1</link></item></channel></rss>",
+    )
     httpx_mock.add_response(url="https://bad.com/feed.xml", status_code=500)
     sources = [
         RssSource(name="Good", url="https://good.com/feed.xml"),

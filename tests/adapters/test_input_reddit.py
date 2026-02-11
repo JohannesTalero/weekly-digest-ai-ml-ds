@@ -1,9 +1,7 @@
 """Tests del adaptador Reddit (T3.4) con mocks."""
 
-import pytest
 from digest.adapters.input_reddit import fetch_reddit_items, _fetch_subreddit_rss
 from digest.config.sources import RedditConfig
-from digest.domain.models import Item
 
 
 def test_fetch_reddit_items_empty_config():

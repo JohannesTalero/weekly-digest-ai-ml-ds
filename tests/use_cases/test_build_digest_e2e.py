@@ -1,7 +1,6 @@
 """Tests E2E del flujo build_digest con mocks de LLM y fuentes (T8.3)."""
 
 from pathlib import Path
-from unittest.mock import MagicMock
 
 import pytest
 
@@ -35,8 +34,6 @@ class TestBuildDigestE2E:
         links_file.write_text("")
         sources = SourcesConfig(rss=[], hacker_news=None, reddit=None)
 
-        from digest.use_cases.pipeline_core import run_core_pipeline
-
         def mock_run(*args, **kwargs):
             return []
 
@@ -68,9 +65,7 @@ class TestBuildDigestE2E:
             "digest.use_cases.build_digest.run_core_pipeline",
             mock_run,
         )
-        result = build_digest(
-            sources, links_file, history_file, MockLLM(), top_n=2
-        )
+        result = build_digest(sources, links_file, history_file, MockLLM(), top_n=2)
         assert len(result) == 2
         assert result[0].summary == "Resumen de: Artículo A"
         assert result[1].summary == "Resumen de: Artículo B"

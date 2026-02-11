@@ -1,7 +1,6 @@
 """Adaptador Hacker News vía Algolia API; queries y límite desde sources.yaml (T3.3)."""
 
 import logging
-from urllib.parse import quote_plus
 
 import httpx
 
