@@ -11,7 +11,8 @@ def test_fetch_reddit_items_empty_config():
     assert fetch_reddit_items(cfg2) == []
 
 
-def test_fetch_subreddit_rss_parses_and_filters_external(httpx_mock):
+def test_fetch_subreddit_rss_parses_external_and_selfposts(httpx_mock):
+    """Incluye enlaces externos y self-posts (reddit.com)."""
     httpx_mock.add_response(
         url="https://www.reddit.com/r/MachineLearning/.rss?limit=10",
         text="""
@@ -31,7 +32,10 @@ def test_fetch_subreddit_rss_parses_and_filters_external(httpx_mock):
         """,
     )
     items = _fetch_subreddit_rss("MachineLearning", 10, timeout=5.0)
-    assert len(items) == 1
+    assert len(items) == 2
     assert items[0].title == "External post"
     assert items[0].url == "https://arxiv.org/abs/1234"
     assert items[0].source == "reddit"
+    assert items[1].title == "Reddit only"
+    assert "reddit.com" in items[1].url
+    assert items[1].source == "reddit"

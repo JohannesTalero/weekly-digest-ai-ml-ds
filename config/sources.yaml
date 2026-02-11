@@ -1,7 +1,12 @@
 # Fuentes RSS/Atom (nombre y URL del feed)
+# TDS eliminado (403). Distill se mantiene pero está inactivo desde 2021.
 rss:
-  - name: "Towards Data Science"
-    url: "https://towardsdatascience.com/feed"
+  - name: "Google AI Blog"
+    url: "https://blog.google/technology/ai/rss/"
+  - name: "OpenAI Blog"
+    url: "https://openai.com/blog/rss.xml"
+  - name: "Lil'Log (ML blog)"
+    url: "https://lilianweng.github.io/index.xml"
   - name: "Distill"
     url: "https://distill.pub/rss.xml"
 

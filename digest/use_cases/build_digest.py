@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from digest.adapters.fetch_og_image import fetch_og_image
 from digest.config.sources import SourcesConfig
 from digest.domain.llm_port import ItemWithSummary, LLMPort
 
@@ -38,4 +39,8 @@ def build_digest(
         summary = llm.summarize(item.title, snippet)
         with_summaries.append(ItemWithSummary(item=item, summary=summary))
     # Rankear y quedarnos con top_n
-    return llm.rank(with_summaries, top_n=top_n)
+    ranked = llm.rank(with_summaries, top_n=top_n)
+    # Enriquecer con imagen OG (solo los top_n para minimizar requests)
+    for x in ranked:
+        x.image_url = fetch_og_image(x.item.url)
+    return ranked

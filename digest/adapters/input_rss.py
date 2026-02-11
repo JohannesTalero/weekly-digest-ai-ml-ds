@@ -29,9 +29,13 @@ def fetch_rss_items(sources: list[RssSource], timeout: float = 15.0) -> list[Ite
     return items
 
 
+DEFAULT_UA = "DigestBot/1.0 (weekly AI/ML digest)"
+
+
 def _fetch_one_feed(url: str, timeout: float) -> list[Item]:
     """Hace GET a una URL de feed, parsea y devuelve lista de Item."""
-    with httpx.Client(timeout=timeout) as client:
+    headers = {"User-Agent": DEFAULT_UA}
+    with httpx.Client(timeout=timeout, headers=headers) as client:
         response = client.get(url)
         response.raise_for_status()
         text = response.text

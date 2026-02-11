@@ -10,6 +10,7 @@ from digest.domain.models import Item
 logger = logging.getLogger(__name__)
 
 ALGOLIA_HN_SEARCH = "https://hn.algolia.com/api/v1/search"
+DEFAULT_UA = "DigestBot/1.0 (weekly AI/ML digest)"
 
 
 def fetch_hacker_news_items(config: HackerNewsConfig, timeout: float = 15.0) -> list[Item]:
@@ -49,7 +50,8 @@ def _search_hn(query: str, hits_per_page: int, timeout: float) -> list[Item]:
         "tags": "story",
         "hitsPerPage": min(hits_per_page, 100),
     }
-    with httpx.Client(timeout=timeout) as client:
+    headers = {"User-Agent": DEFAULT_UA}
+    with httpx.Client(timeout=timeout, headers=headers) as client:
         response = client.get(ALGOLIA_HN_SEARCH, params=params)
         response.raise_for_status()
         data = response.json()

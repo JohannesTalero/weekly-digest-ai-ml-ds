@@ -77,10 +77,26 @@ def render_digest_html(items: list[ItemWithSummary]) -> str:
         source = x.item.source
         label = _escape_html(_source_label(source))
         color = _source_color(source)
+        image_url = getattr(x, "image_url", None)
 
-        parts.extend(
+        article_parts = [
+            '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">',
+        ]
+        if image_url:
+            img_url_escaped = _escape_html(image_url)
+            article_parts.extend(
+                [
+                    "<tr>",
+                    '<td colspan="2" style="padding-bottom:12px;">',
+                    f'<a href="{url}">',
+                    f'<img src="{img_url_escaped}" width="100%" style="border-radius:8px; max-height:200px; object-fit:cover;" alt="{title}">',
+                    "</a>",
+                    "</td>",
+                    "</tr>",
+                ]
+            )
+        article_parts.extend(
             [
-                '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">',
                 "<tr>",
                 f'<td width="48" style="vertical-align:top; padding-right:16px;"><span style="font-size:28px; font-weight:700; color:#4F46E5; line-height:1;">{rank}</span></td>',
                 '<td style="vertical-align:top;">',
@@ -93,6 +109,7 @@ def render_digest_html(items: list[ItemWithSummary]) -> str:
                 "</table>",
             ]
         )
+        parts.extend(article_parts)
 
     parts.extend(
         [
@@ -133,6 +150,9 @@ def render_digest_text(items: list[ItemWithSummary]) -> str:
         lines.append(f"{rank}. {x.item.title}")
         lines.append(f"   Fuente: {label}")
         lines.append(f"   {x.item.url}")
+        image_url = getattr(x, "image_url", None)
+        if image_url:
+            lines.append(f"   Imagen: {image_url}")
         lines.append(f"   {x.summary}")
         lines.append("")
 

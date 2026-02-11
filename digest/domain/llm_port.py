@@ -8,10 +8,11 @@ from digest.domain.models import Item
 
 @dataclass
 class ItemWithSummary:
-    """Ítem con mini resumen generado por el LLM."""
+    """Ítem con mini resumen generado por el LLM y opcionalmente URL de imagen OG."""
 
     item: Item
     summary: str
+    image_url: str | None = None
 
 
 class LLMPort(Protocol):

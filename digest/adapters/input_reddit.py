@@ -12,6 +12,7 @@ from digest.domain.models import Item
 logger = logging.getLogger(__name__)
 
 REDDIT_RSS_BASE = "https://www.reddit.com/r/{subreddit}/.rss"
+DEFAULT_UA = "DigestBot/1.0 (weekly AI/ML digest)"
 
 
 def fetch_reddit_items(config: RedditConfig, timeout: float = 15.0) -> list[Item]:
@@ -40,9 +41,10 @@ def fetch_reddit_items(config: RedditConfig, timeout: float = 15.0) -> list[Item
 
 
 def _fetch_subreddit_rss(subreddit: str, limit: int, timeout: float) -> list[Item]:
-    """Obtiene posts del subreddit vía RSS; solo posts con enlace externo."""
+    """Obtiene posts del subreddit vía RSS: enlaces externos y self-posts (reddit.com)."""
     url = REDDIT_RSS_BASE.format(subreddit=quote_plus(subreddit))
-    with httpx.Client(timeout=timeout) as client:
+    headers = {"User-Agent": DEFAULT_UA}
+    with httpx.Client(timeout=timeout, headers=headers) as client:
         response = client.get(url, params={"limit": min(limit, 25)})
         response.raise_for_status()
         text = response.text
@@ -54,9 +56,7 @@ def _fetch_subreddit_rss(subreddit: str, limit: int, timeout: float) -> list[Ite
         link = _get_entry_link(entry)
         if not link:
             continue
-        # Solo enlaces externos (no reddit.com)
-        if "reddit.com" in link:
-            continue
+        # Incluir tanto enlaces externos como self-posts (link a reddit.com)
         title = (entry.get("title") or "").strip() or "(sin título)"
         date_str = _get_entry_date(entry)
         out.append(
